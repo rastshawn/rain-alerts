@@ -1,0 +1,27 @@
+if heavy rain in next 48 hours:
+    Daily text that lists rain incidents
+
+Every 24 hours:
+    if heavy rain in the next 48 hours:
+        Send text that lists rain incidents
+        mark all incidents as notified
+
+Every hour:
+    Check for heavy rain in next 24 hours
+        if weather is found that is 
+            not in notified list:
+            
+            if day:
+                if weather is less than 2 hours away
+                    call
+                    mark as notified
+                else 
+                    text
+                    mark as notified
+            else: #night
+                if weather is before daytime:
+                    call
+                    mark as notified
+                else:
+                    # do nothing; include on next daily report
+                    do not mark as notified
