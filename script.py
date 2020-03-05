@@ -100,10 +100,12 @@ def daily():
                 + ' millimeters of rain starting at ' + str(adjustedTime.hour) + \
                 ' o clock on ' + getMonthString(adjustedTime.month) + ' ' + getDateString(adjustedTime.day) + ' --- ---'
             reportValues.append(reportString)
-    totalReport = 'There will be heavy rain in the next few days. '
-    totalReport += ''.join(reportValues)
-    print(totalReport)
-    #makeCall(totalReport)
+        totalReport = 'There will be heavy rain in the next few days. '
+        totalReport += ''.join(reportValues)
+        print(totalReport)
+        makeCall(totalReport)
+    else:
+        print('No serious rain.')
     return
 
 
