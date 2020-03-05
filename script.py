@@ -52,7 +52,7 @@ def getWeather():
         httpResponse = conn.getresponse()
         responseRAW = httpResponse.read()
         conn.close()
-        weatherData = json.loads(responseRAW)
+        weatherData = json.loads(responseRAW.decode('utf-8'))
         values = weatherData['properties']['quantitativePrecipitation']['values']
     except:
         conn.close()
