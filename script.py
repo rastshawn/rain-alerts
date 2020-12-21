@@ -1,10 +1,14 @@
 import http.client
 import json
 import sys
+import configparser
 from datetime import datetime, timedelta
 
 
 RAIN_ACCUMULATION_ALERT_LEVEL_IN_MM = 2.54 # 0.1 inches
+
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 def getMonthString(num):
     ret = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -59,8 +63,18 @@ def getWeather():
 
     return values
 
+def printToGroupMe(message):
+    bot_id = config['DEFAULT']['bot_id']
+    conn = http.client.HTTPSConnection("api.groupme.com")
+    endp = '/v3/bots/post'
+    headers = {'Content-type': 'application/json'}
+    payload = {'text': message, 'bot_id':bot_id}
+    json_data = json.dumps(payload)
+    conn.request('POST', endp, json_data, headers)
+    return
+
 def makeCall(message):
-    key = sys.argv[1]
+    key = config['DEFAULT']['ifttt_key']
 
     body = {
         'value1' : message
@@ -102,23 +116,15 @@ def daily():
             reportValues.append(reportString)
         totalReport = 'There will be heavy rain in the next few days. '
         totalReport += ''.join(reportValues)
-        print(totalReport)
+        printToGroupMe(totalReport)
         makeCall(totalReport)
     else:
-        print('No serious rain.')
+        printToGroupMe('No serious rain.')
     return
 
-
-def hourly():
-    return
 
 if __name__ == "__main__":
-    #makeCall("I can make it say whatever I want to")
-    if (len(sys.argv) > 2 and sys.argv[2] == "daily"):
-        daily()
-    hourly()
-    #weatherValues = getWeather()
-    #print(weatherValues)
+    daily()
 
 #     (response).properties.quantitativePrecipitation.values[]
 # Each of the above is an obj: {
