@@ -84,14 +84,21 @@ def makeCall(message):
         "Content-Type" : "application/json; charset=utf-8",
         "Content-Length" : len(encodedBody)
     }
-    conn = http.client.HTTPSConnection("maker.ifttt.com")
-    conn.request("POST", '/trigger/heavy_rain_call/with/key/' + key,
-        encodedBody,
-        headers=header)
-    httpResponse = conn.getresponse()
-    conn.close()
-    return httpResponse.read()
-
+    try:
+        conn = http.client.HTTPSConnection("maker.ifttt.com")
+        conn.request("POST", '/trigger/heavy_rain_call/with/key/' + key,
+            encodedBody,
+            headers=header)
+        httpResponse = conn.getresponse()
+        conn.close()
+        responseRAW = httpResponse.read()
+        response = responseRAW.decode('utf-8')
+        print(response)
+        return response
+    except Exception as e:
+        postToGroupMe(e)
+        conn.close()
+        return
 
 def daily():
     concern = []
